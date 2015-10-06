@@ -1,0 +1,30 @@
+{% set server = salt['grains.filter_by']({
+    'Debian': {
+        'pkgs': ['mongodb-server', 'mongodb', 'python-pymongo', 'mongodb-clients'],
+        'service': 'mongodb',
+        'lock_dir': "/var/lock/mongodb",
+        'bind': {
+          'address': '0.0.0.0',
+          'port': 27017
+        },
+        'config_service': False,
+        'shard_service': True,
+        'admin': {
+          'username': 'root'
+        }
+    },
+    'RedHat': {
+        'pkgs': ['mongodb-server', 'mongodb', 'python-pymongo', 'mongodb-clients'],
+        'service': 'mongod',
+        'lock_dir': "/var/lock/mongodb",
+        'bind': {
+          'address': '0.0.0.0',
+          'port': 27017
+        },
+        'config_service': False,
+        'shard_service': True,
+        'admin': {
+          'username': 'root'
+        }
+    },
+}, merge=salt['pillar.get']('mongodb:server')) %}

@@ -1,0 +1,15 @@
+Source: salt-formula-mongodb
+Maintainer: Filip Pytloun <filip.pytloun@tcpcloud.eu>
+Section: admin
+Priority: optional
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.6
+Homepage: http://www.tcpcloud.eu
+Vcs-Browser: https://github.com/tcpcloud/salt-formula-mongodb
+Vcs-Git: https://github.com/tcpcloud/salt-formula-mongodb.git
+
+Package: salt-formula-mongodb
+Architecture: all
+Depends: ${misc:Depends}, salt-master, reclass
+Description: MongoDB Salt formula
+ Install and configure MongoDB server.

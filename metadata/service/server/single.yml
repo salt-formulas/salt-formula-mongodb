@@ -1,0 +1,15 @@
+applications:
+- mongodb
+parameters:
+  mongodb:
+    server:
+      enabled: true
+      admin:
+        user: admin
+        password: ${_param:mongodb_admin_password}
+      bind:
+        address: 0.0.0.0
+        port: 27017
+      shard_service: False
+      config_service: False
+      shared_key: ${_param:mongodb_shared_key}
