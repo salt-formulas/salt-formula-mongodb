@@ -1,2 +1,0 @@
-mongodb/*             /usr/share/salt-formulas/env/mongodb/
-metadata/service/*    /usr/share/salt-formulas/reclass/service/mongodb/
