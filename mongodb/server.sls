@@ -64,6 +64,8 @@ mongodb_database_{{ database_name }}:
   mongodb_user.present:
   - name: {{ database_name }}
   - passwd: {{ database.password }}
+  - user: admin
+  - password: {{ server.admin.password }}
   {%- if server.members is defined %}
   require:
     - cmd: mongodb_setup_cluster
