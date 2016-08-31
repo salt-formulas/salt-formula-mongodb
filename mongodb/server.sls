@@ -60,25 +60,12 @@ mongodb_change_root_password:
 
 {%- for database_name, database in server.get('database', {}).iteritems() %}
 
-mongodb_database_{{ database_name }}:
-  mongodb_user.present:
-  - name: {{ database_name }}
-  - passwd: {{ database.password }}
-  - user: admin
-  - password: {{ server.admin.password }}
-  {%- if server.members is defined %}
-  require:
-    - cmd: mongodb_setup_cluster
-  {%- endif %}
-
 /var/tmp/mongodb_user_{{ database_name }}.js:
   file.managed:
   - source: salt://mongodb/files/user_role.js
   - template: jinja
   - mode: 600
   - user: root
-  - require:
-    - mongodb_user: {{ database_name }}
   - defaults:
       database_name: {{ database_name }}
 
@@ -89,6 +76,10 @@ mongodb_{{ database_name }}_fix_role:
     - file: /var/tmp/mongodb_user_{{ database_name }}.js
     - service: mongodb_service
   - creates: {{ server.lock_dir }}/mongodb_user_{{ database_name }}_created
+  {%- if server.members is defined %}
+  require:
+    - cmd: mongodb_setup_cluster
+  {%- endif %}
 
 {%- endfor %}
 
