@@ -1,5 +1,7 @@
 applications:
 - mongodb
+classes:
+- service.mongodb.support
 parameters:
   mongodb:
     server:
