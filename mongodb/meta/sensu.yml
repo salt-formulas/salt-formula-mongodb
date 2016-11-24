@@ -1,7 +1,7 @@
-{%- from "linux/map.jinja" import network with context -%}
-{%- if grains.ipv4[0] == '127.0.0.1' %}{%- set address =  grains.ipv4[1] %}{% else %}{%- set address =  grains.ipv4[0] %}{% endif %}
+{%- from "mongodb/map.jinja" import server with context -%}
+{%- if server.bind.address == '0.0.0.0' %}{%- set address = '127.0.0.1' %}{% else %}{%- set address = server.bind.address %}{% endif %}
 check:
-  remote_mongodb_mdb_{{ network.fqdn }}:
+  remote_mongodb_mdb_{{ grains.fqdn }}:
     command: "PATH=$PATH:/etc/sensu/plugins check_mongodb.py -H {{ address }} -A connect -P 27017"
     interval: 60
     occurrences: 1
