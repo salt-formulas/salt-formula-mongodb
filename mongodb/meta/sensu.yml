@@ -6,4 +6,4 @@ check:
     interval: 60
     occurrences: 1
     subscribers:
-    - local-mongodb-server
+    - {{ grains['fqdn']|replace('.', '-') }}
