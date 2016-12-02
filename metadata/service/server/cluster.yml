@@ -1,5 +1,7 @@
 applications:
 - mongodb
+classes:
+- service.mongodb.support
 parameters:
   _param:
     mongodb_server_replica_set: default

@@ -1,0 +1,9 @@
+{%- from "mongodb/map.jinja" import server with context -%}
+{%- if server.bind.address == '0.0.0.0' %}{%- set address = '127.0.0.1' %}{% else %}{%- set address = server.bind.address %}{% endif %}
+check:
+  local_mongodb_mdb_{{ grains.fqdn }}:
+    command: "PATH=$PATH:/etc/sensu/plugins check_mongodb.py -H {{ address }} -A connect -P {{ server.bind.port }}"
+    interval: 60
+    occurrences: 1
+    subscribers:
+    - {{ grains['fqdn']|replace('.', '-') }}
