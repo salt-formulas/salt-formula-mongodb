@@ -91,6 +91,10 @@ Cluster of 3 nodes
     mongodb:
       server:
         enabled: true
+        logging:
+          verbose: false
+          logLevel: 1
+          oplogLevel: 0
         admin:
           user: admin
           password: magicunicorn
