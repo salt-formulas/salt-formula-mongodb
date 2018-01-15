@@ -10,6 +10,6 @@ Vcs-Git: https://github.com/tcpcloud/salt-formula-mongodb.git
 
 Package: salt-formula-mongodb
 Architecture: all
-Depends: ${misc:Depends}, salt-master, reclass
+Depends: ${misc:Depends}
 Description: MongoDB Salt formula
  Install and configure MongoDB server.
