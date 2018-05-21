@@ -1,6 +1,6 @@
 {%- from "mongodb/map.jinja" import server with context %}
-{%- if server.enabled %}
 
+{%- if server.get('enabled', False) %}
 mongodb_packages:
   pkg.installed:
   - names: {{ server.pkgs }}
@@ -13,7 +13,6 @@ mongodb_packages:
     - pkg: mongodb_packages
 
 {%- if server.shared_key is defined %}
-
 /etc/mongodb.key:
   file.managed:
   - contents_pillar: mongodb:server:shared_key
@@ -23,7 +22,6 @@ mongodb_packages:
     - pkg: mongodb_packages
   - watch_in:
     - service: mongodb_service
-
 {%- endif %}
 
 {{ server.lock_dir }}:
@@ -43,9 +41,37 @@ mongodb_service:
   - watch:
     - file: /etc/mongodb.conf
 
-{%- if server.members is not defined  or server.master == pillar.linux.system.name %}
-{# We are not a cluster or we are master #}
+{%- if server.members is defined and server.master == pillar.linux.system.name %}
 
+/var/tmp/mongodb_cluster.js:
+  file.managed:
+  - source: salt://mongodb/files/cluster.js
+  - template: jinja
+  - mode: 600
+  - user: root
+
+mongodb_setup_cluster_wait:
+  cmd.run:
+  - name: 'sleep 10'
+  - unless: 'mongo localhost:27017 --quiet --eval "rs.conf()" | grep -i object -q'
+  - require:
+    - service: mongodb_service
+    - file: /var/tmp/mongodb_cluster.js
+
+mongodb_setup_cluster:
+  cmd.run:
+  - name: 'mongo localhost:27017 /var/tmp/mongodb_cluster.js && mongo localhost:27017 --quiet --eval "rs.conf()" | grep -i object -q'
+  - unless: 'mongo localhost:27017 --quiet --eval "rs.conf()" | grep -i object -q'
+  - require:
+    - service: mongodb_service
+    - file: /var/tmp/mongodb_cluster.js
+    - cmd: mongodb_setup_cluster_wait
+
+{%- endif %}
+
+{%- if server.members is not defined or server.master == pillar.linux.system.name %}
+
+{%- if server.authorization.get('enabled', False) %}
 /var/tmp/mongodb_user.js:
   file.managed:
   - source: salt://mongodb/files/user.js
@@ -91,25 +117,6 @@ mongodb_{{ database_name }}_fix_role:
   {%- endif %}
 
 {%- endfor %}
-
-{%- if server.members is defined %}
-
-/var/tmp/mongodb_cluster.js:
-  file.managed:
-  - source: salt://mongodb/files/cluster.js
-  - template: jinja
-  - mode: 600
-  - user: root
-
-mongodb_setup_cluster:
-  cmd.run:
-  - name: 'mongo localhost:27017/admin /var/tmp/mongodb_cluster.js && mongo localhost:27017/admin --quiet --eval "rs.conf()" | grep object -q'
-  - unless: 'mongo localhost:27017/admin -u admin -p {{ server.admin.password }} --quiet --eval "rs.conf()" | grep object -q'
-  - require:
-    - service: mongodb_service
-    - file: /var/tmp/mongodb_cluster.js
-  - require_in:
-    - cmd: mongodb_change_root_password
 
 {%- endif %}
 
