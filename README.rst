@@ -76,6 +76,23 @@ Simple single server
         admin:
           username: admin
           password: magicunicorn
+        shared_key: |
+          bEoUQ4QKB8RsJt1cBnO8/2fni3CG+/L2CrGQ+RNJuA5cpIoeehHmWG1ir5mTUx9N
+          OLLDvtHT6423395tmGBAJAISv5LXY8PNB6/m1LxsfEDEfjlLwo62z2pMG94ZBPX6
+          pGy5YRlii77fi9l5/+d/ULFQSFy6uq5Py0qeFF1IsYsmeSP8GrCExw/9oxWj+Tmv
+          qHcmRtm1EdaTKpAS2O07NMZTUxTO3SkaXzLZZF1QmflROcZq3ZteuM4jKBtOjKIt
+          MlkkJ0rcIcahTw6x+iWQNDdip5uLS2Xc7i77ZMC4RZmeYVwQ16QtwNdNsTcnoeFC
+          FfNIUXCckbZikhyUWlRUZd7NQ6YnQLGKi1Bs0YV0QLmocHFssiB9wnsNynMSgd4i
+          zJ/joOlrqmIAmF8BJsa1D+szA4cHc0roWRiCfXvkVjL5fsPNXQpqu0ghPJXigoHJ
+          7//HVsmNzX+Tb2hrHdHE+fnQgVmOgPbUPaPqTqwv9lfDeZj7kwn6pwrHZpcVLoTi
+          ynv7Obl1dHJptRBXqEGBoYcJ2gDNBzuAN9QDpgueVn89s1x/LhHItItBRAwwlsMA
+          T++Imel/9qA68kCSzjoj1GZw7CKAAoi9lZSKy5xVzo03K5ZYfaHdPFFG9wqncfH6
+          tONxYHv1faQosjPJGQFcwPRqFYzPNzlIOnWYbFUwTJAvXGRcWui/XjpsjAwO7Ba/
+          /7hDvlCBgAeor3dPo1d47eCH8ZjCc1pwd8v0fj2q3FvUTEJUsIjH4y3smlzZWR27
+          Xx6lINe/i+OhwWH8538U4MWku52lbLn2G3pta7TJpVeVoZcNjs9tYWWeMjOmrcJH
+          tPSe9zc5i+ZbD17npXRTlngaTP5ANKo6PlT2r2tzV06iYaSLyqVPoBA6evHwggcY
+          AVw1v99wilvOisIP0n5QgTxpTLA8JHr3Erq7CCDDc+uUbrp0gAf+WATrM5HSNd2M
+          YIaOzbYo5Mp71ofF8Xem/ce8GoCCypdWzvrT1DJMDxyt48DF
         database:
           dbname:
             enabled: true
@@ -117,11 +134,20 @@ To check cluster status, execute following:
 
     mongo 127.0.0.1:27017/admin -u admin -p magicunicorn --eval "rs.status()"
 
+
+The shared_key can be generated through the use of the following open_ssl command:
+
+.. code-block:: bash
+
+openssl rand -base64 756
+
+
 Read more
 =========
 
 * http://docs.mongodb.org/manual/
 * http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
+* http://docs.mongodb.com/manual/tutorial/deploy-replica-set-with-keyfile-access-control/
 * https://www.linode.com/docs/databases/mongodb/creating-a-mongodb-replication-set-on-ubuntu-12-04-precise
 
 Documentation and Bugs

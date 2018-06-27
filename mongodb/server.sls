@@ -24,7 +24,15 @@ mongodb_packages:
     - service: mongodb_service
 {%- endif %}
 
+{{ server.data_dir }}:
+  file.directory:
+    - makedirs: true
+
 {{ server.lock_dir }}:
+  file.directory:
+    - makedirs: true
+
+{{ server.logging.log_dir }}:
   file.directory:
     - makedirs: true
 

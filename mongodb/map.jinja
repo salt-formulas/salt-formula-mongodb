@@ -2,8 +2,11 @@
     'Debian': {
         'pkgs': ['mongodb-server', 'mongodb', 'mongodb-clients'],
         'service': 'mongodb',
+        'data_dir': "/var/lib/mongodb",
         'lock_dir': "/var/lock/mongodb",
-        'logging': {},
+        'logging': {
+          'log_dir': "/var/log/mongodb",
+        },
         'bind': {
           'address': '127.0.0.1',
           'port': 27017
@@ -16,8 +19,11 @@
     'RedHat': {
         'pkgs': ['mongodb-server', 'mongodb', 'mongodb-clients'],
         'service': 'mongod',
+        'data_dir': "/var/lib/mongodb",
         'lock_dir': "/var/lock/mongodb",
-        'logging': {},
+        'logging': {
+          'log_dir': "/var/log/mongodb",
+        },
         'bind': {
           'address': '127.0.0.1',
           'port': 27017
