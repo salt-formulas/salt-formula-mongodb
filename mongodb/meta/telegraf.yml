@@ -1,0 +1,6 @@
+{%- from "mongodb/map.jinja" import server with context %}
+{%- if server.get('enabled', False) %}
+agent:
+  input:
+    mongodb:
+{%- endif %}

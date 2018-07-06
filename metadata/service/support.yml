@@ -9,3 +9,7 @@ parameters:
         enabled: true
       sphinx:
         enabled: false
+      prometheus:
+        enabled: true
+      telegraf:
+        enabled: true

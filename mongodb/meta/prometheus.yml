@@ -1,0 +1,37 @@
+{%- from "mongodb/map.jinja" import server with context %}
+{%- if server.get('enabled', False) %}
+{%- raw %}
+server:
+  alert:
+    MongoDBServiceDown:
+      if: >-
+        mongodb_up == 0
+      for: 1m
+      labels:
+        severity: minor
+        service: mongodb
+      annotations:
+        summary: "MongoDB service is down"
+        description: "The MongoDB service on the {{ $labels.host }} node is down for 1 minute."
+    MongoDBServiceOutage:
+      if: >-
+        count(mongodb_up == 0) == count(mongodb_up)
+      for: 1m
+      labels:
+        severity: critical
+        service: mongodb
+      annotations:
+        summary: "MongoDB service outage"
+        description: "All MongoDB services are down for 1 minute."
+    MongoDBNoPrimaryMember:
+      if: >-
+        absent({__name__=~"mongodb.*",state="PRIMARY"})
+      for: 1m
+      labels:
+        severity: critical
+        service: mongodb
+      annotations:
+        summary: "MongoDB cluster has no primary member"
+        description: "MongoDB cluster has no primary member for 1 minute."
+{%- endraw %}
+{%- endif %}
